@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    networks:
+      - detectify-network
+
+  backend:
+    image: detectify-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - ${BACKEND_PORT}:8000
+    volumes:
+      - ./backend/.env:/app/.env
+      - ./backend/static:/app/static
+    depends_on:
+      - db
+    networks:
+      - detectify-network
+    command: [ "python", "main.py" ]
+
+  frontend:
+    image: detectify-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - ${FRONTEND_PORT}:3000
+    environment:
+      - API_URL=${BACKEND_URL}
+    depends_on:
+      - backend
+    networks:
+      - detectify-network
+    command: [ "pnpm", "start" ]
+
+networks:
+  detectify-network:
+    driver: bridge
