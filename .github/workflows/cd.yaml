@@ -2,8 +2,8 @@ name: Deploy to Docker Hub
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - "v*.*.*"
 
 jobs:
   build-and-push:
