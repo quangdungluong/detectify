@@ -24,7 +24,7 @@ jobs:
       - name: Build and push FastAPI backend
         uses: docker/build-push-action@v4
         with:
-          context: .backend
+          context: ./backend
           file: Dockerfile
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/detectify-backend:latest
           push: true
@@ -32,7 +32,7 @@ jobs:
       - name: Build and push Next.js frontend
         uses: docker/build-push-action@v4
         with:
-          context: .frontend
+          context: ./frontend
           file: Dockerfile
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/detectify-frontend:latest
           push: true
