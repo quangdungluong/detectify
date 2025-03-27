@@ -16,7 +16,7 @@ class DetectionDetailResponse(BaseModel):
     class_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class DetectionResponse(BaseModel):
@@ -32,7 +32,7 @@ class DetectionResponse(BaseModel):
     details: Optional[List[DetectionDetailResponse]] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class PaginateResponse(BaseModel):
@@ -43,7 +43,7 @@ class PaginateResponse(BaseModel):
     data: list[DetectionResponse]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ImageUrlRequest(BaseModel):
