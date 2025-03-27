@@ -27,6 +27,8 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/detectify-backend:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/detectify-backend:cache
+          cache-to: type=inline
           push: true
 
       - name: Build and push Next.js frontend
@@ -35,4 +37,6 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/detectify-frontend:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/detectify-frontend:cache
+          cache-to: type=inline
           push: true
