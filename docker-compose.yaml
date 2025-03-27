@@ -16,14 +16,14 @@ services:
 
   backend:
     image: detectify-backend:latest
+    container_name: backend
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
       - ${BACKEND_PORT}:8000
     volumes:
-      - ./backend/.env:/app/.env
-      - ./backend/static:/app/static
+      - ./backend:/app
     depends_on:
       - db
     networks:
@@ -32,6 +32,7 @@ services:
 
   frontend:
     image: detectify-frontend:latest
+    container_name: frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -44,6 +45,19 @@ services:
     networks:
       - detectify-network
     command: [ "pnpm", "start" ]
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - ${NGINX_PORT}:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - detectify-network
 
 networks:
   detectify-network:
