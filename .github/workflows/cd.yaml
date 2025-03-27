@@ -25,7 +25,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./backend
-          file: Dockerfile
+          file: ./backend/Dockerfile
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/detectify-backend:latest
           push: true
 
@@ -33,6 +33,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./frontend
-          file: Dockerfile
+          file: ./frontend/Dockerfile
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/detectify-frontend:latest
           push: true
