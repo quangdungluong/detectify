@@ -2,6 +2,10 @@
 
 Detectify is a full-stack application for detecting people in images using YOLO object detection. This application provides an intuitive web interface to upload images and view detection results.
 
+## Overview
+
+![system-design](./assets/system-design.png)
+
 ## Features
 
 - Image Upload
