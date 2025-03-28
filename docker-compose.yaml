@@ -3,6 +3,7 @@ version: "3.8"
 services:
   db:
     image: postgres:15
+    container_name: db
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -11,6 +12,16 @@ services:
       - ${DB_PORT}:5432
     volumes:
       - ./db_data:/var/lib/postgresql/data
+    networks:
+      - detectify-network
+
+  triton:
+    image: nvcr.io/nvidia/tritonserver:23.03-py3
+    container_name: triton
+    command: tritonserver --model-repository=/models --log-verbose=1
+    volumes:
+      - ./model_repository:/models
+    restart: always
     networks:
       - detectify-network
 
@@ -26,6 +37,7 @@ services:
       - ./backend:/app
     depends_on:
       - db
+      - triton
     networks:
       - detectify-network
     command: [ "python", "main.py" ]

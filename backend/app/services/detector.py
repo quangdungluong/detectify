@@ -9,13 +9,15 @@ from ultralytics import YOLO
 
 class PersonDetector:
     def __init__(self):
-        self.model = YOLO(os.path.join(settings.STATIC_DIR, "yolo11n.pt"))
+        self.model = YOLO(settings.TRITON_URI, task="detect")
 
         os.makedirs(settings.IMAGES_DIR, exist_ok=True)
 
     def detect(self, image_path: str, conf: float = 0.5):
         image = cv2.imread(image_path)
-        results = self.model.predict(image, conf=conf, verbose=False, classes=[0])[0]
+        results = self.model.predict(
+            image, conf=conf, verbose=False, classes=[0], save=False
+        )[0]
 
         output_path = os.path.join(settings.IMAGES_DIR, f"{uuid.uuid4()}.jpg")
         for bbox in results.boxes.xyxy:

@@ -28,5 +28,8 @@ class Settings(BaseSettings):
         "http://localhost:8000",
     ]
 
+    # Model configuration
+    TRITON_URI: str = os.getenv("TRITON_URI", "grpc://localhost:8001/yolo")
+
 
 settings = Settings()
